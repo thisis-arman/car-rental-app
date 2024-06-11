@@ -1,7 +1,7 @@
 import { Model } from "mongoose"
 
 
-type TUser = {
+export type TUser = {
 
     name: string,
     email: string,
