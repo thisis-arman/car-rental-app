@@ -12,6 +12,8 @@ const userSchema = new Schema<TUser>({
   address: { type: String, required: true },
 });
 
+
+
 userSchema.statics.isUserExists = async function (
   id: string
 ): Promise<TUser | null> {
