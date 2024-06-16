@@ -4,7 +4,8 @@ import sendResponse from "../../utils/sendResponse";
 import { CarServices } from "./car.service";
 
 const addNewCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.addNewCarIntoDB(req.body);
+    const result = await CarServices.addNewCarIntoDB(req.body);
+    console.log({result});
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "Car added successfully",
@@ -14,7 +15,7 @@ const addNewCar = catchAsync(async (req, res, next) => {
 });
 
 const getAllCars = catchAsync(async (req, res, next) => {
-  const result = CarServices.getAllCarsFromDB(req.body);
+  const result =await CarServices.getAllCarsFromDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -24,7 +25,7 @@ const getAllCars = catchAsync(async (req, res, next) => {
 });
 
 const getSingleCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.getSingleCarFromDB(req.params.carId);
+  const result = await CarServices.getSingleCarFromDB(req.params.carId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -34,7 +35,7 @@ const getSingleCar = catchAsync(async (req, res, next) => {
 });
 
 const updateSingleCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.updateCarFromDB(req.params.carId, req.body);
+  const result =await CarServices.updateCarFromDB(req.params.carId, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -45,7 +46,7 @@ const updateSingleCar = catchAsync(async (req, res, next) => {
 
 
 const deleteSingleCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.deleteCarFromDB(req.params.carId);
+  const result =await CarServices.deleteCarFromDB(req.params.carId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

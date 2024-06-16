@@ -7,11 +7,13 @@ const loginUser = catchAsync(async (req, res, next) => {
   const result = authServices.loginUser(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: "Car added successfully",
+    message: "User logged in successfully",
     success: true,
     data: result,
   });
 });
+
+
 
 const changePassword = catchAsync(async (req, res, next) => {
   const result = authServices.changePassword(req.body);
@@ -27,7 +29,7 @@ const changePassword = catchAsync(async (req, res, next) => {
 
 
 
-export const carControllers = {
+export const authControllers = {
   loginUser,
   changePassword,
 };

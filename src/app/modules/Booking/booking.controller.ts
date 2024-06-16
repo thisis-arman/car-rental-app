@@ -4,7 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import { BookingServices } from "./booking.service";
 
 const createBooking = catchAsync(async (req, res, next) => {
-  const result = BookingServices.createBookingIntoDB(req.body);
+  const result =await BookingServices.createBookingIntoDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "Booking added successfully",
@@ -14,7 +14,7 @@ const createBooking = catchAsync(async (req, res, next) => {
 });
 
 const getAllBookings = catchAsync(async (req, res, next) => {
-  const result = BookingServices.getAllBookingsFromDB(req.body);
+  const result = await BookingServices.getAllBookingsFromDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -24,7 +24,7 @@ const getAllBookings = catchAsync(async (req, res, next) => {
 });
 
 const getSingleBooking = catchAsync(async (req, res, next) => {
-  const result = BookingServices.getSingleBookingFromDB(req.params.id);
+  const result = await BookingServices.getSingleBookingFromDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -34,7 +34,10 @@ const getSingleBooking = catchAsync(async (req, res, next) => {
 });
 
 const updateSingleBooking = catchAsync(async (req, res, next) => {
-  const result = BookingServices.updateBookingFromDB(req.params.id, req.body);
+  const result = await BookingServices.updateBookingFromDB(
+    req.params.id,
+    req.body
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -44,7 +47,7 @@ const updateSingleBooking = catchAsync(async (req, res, next) => {
 });
 
 const deleteSingleBooking = catchAsync(async (req, res, next) => {
-  const result = BookingServices.deleteBookingFromDB(req.params.id);
+  const result = await BookingServices.deleteBookingFromDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
