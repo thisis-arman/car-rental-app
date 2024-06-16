@@ -22,5 +22,18 @@ class QueryBuilder<T> {
         ),
       });
     }
+
+    return this;
+  }
+
+  filter() {
+    const queryObj = { ...this.query };
+    // TODO: you may need to add more fields here
+    const excludeFields = ["search", "sort", "page", "page", "limit"];
+
+    excludeFields.forEach((field) => delete queryObj[field]);
+
+    this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+    return this;
   }
 }
