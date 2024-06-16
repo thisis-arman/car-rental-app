@@ -3,12 +3,11 @@
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import config from "../config";
-import AppError from "../errors/AppError";
-import handleCastError from "../errors/handleCastError";
-import handleDuplicateError from "../errors/handleDuplicateError";
-import handleValidationError from "../errors/handleValidationError";
-import handleZodError from "../errors/handleZodError";
 import { TErrorOrigin } from "../interface/error";
+import handleZodError from "../error/zodError";
+import handleValidationError from "../error/handleValidationError";
+import handleCastError from "../error/handleCastError";
+import handleDuplicateError from "../error/handleDuplicateError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //setting default values
