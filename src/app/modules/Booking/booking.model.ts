@@ -2,11 +2,12 @@
 
 import { Schema, model, Types } from "mongoose";
 import { TBooking } from "./booking.interface";
+import { number } from "zod";
 
 const BookingSchema = new Schema<TBooking>(
   {
     date: {
-      type: String,
+      type: Date,
       required: [true, "Date is required"],
     },
     user: {
@@ -28,14 +29,10 @@ const BookingSchema = new Schema<TBooking>(
       required: [true, "End time is required"],
     },
     totalCost: {
-      type: String,
-      required: [true, "Total cost is required"],
+      type: number,
+      default:0
     },
-    isBooked: {
-      type: String,
-      enum: ["confirmed", "unconfirmed"],
-      required: [true, "Booking status is required"],
-    },
+   
   },
   { timestamps: true }
 );
