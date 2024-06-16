@@ -1,13 +1,13 @@
 
 import express from 'express';
+import { CarRoutes } from '../modules/Car/car.route';
 
 const router = express.Router()
 
 const moduleRoutes = [
-    {
-        path: '/users',
-        route:"uer"
-
+     {
+        path: '/cars',
+        route:CarRoutes
     }
 ]
 

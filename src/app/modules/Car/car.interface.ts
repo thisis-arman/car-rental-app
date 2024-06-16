@@ -1,6 +1,6 @@
 
 
-interface Car {
+export type TCar ={
   name: string;
   description: string;
   color: string;
@@ -10,3 +10,4 @@ interface Car {
   pricePerHour: number;
   isDeleted: boolean;
 }
+
