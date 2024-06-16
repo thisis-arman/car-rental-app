@@ -48,5 +48,6 @@ export const userServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
-  updateUserIntoDB,
+    updateUserIntoDB,
+  deleteUserFromDB
 };
