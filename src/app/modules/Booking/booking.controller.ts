@@ -1,60 +1,60 @@
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { CarServices } from "./car.service";
+import { BookingServices } from "./booking.service";
 
-const addNewCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.addNewCarIntoDB(req.body);
+const createBooking = catchAsync(async (req, res, next) => {
+  const result = BookingServices.createBookingIntoDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
-    message: "Car added successfully",
+    message: "Booking added successfully",
     success: true,
     data: result,
   });
 });
 
-const getAllCars = catchAsync(async (req, res, next) => {
-  const result = CarServices.getAllCarsFromDB(req.body);
+const getAllBookings = catchAsync(async (req, res, next) => {
+  const result = BookingServices.getAllBookingsFromDB(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Cars are retrieved successfully",
+    message: "Bookings are retrieved successfully",
     data: result,
   });
 });
 
-const getSingleCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.getSingleCarFromDB(req.params.carId);
+const getSingleBooking = catchAsync(async (req, res, next) => {
+  const result = BookingServices.getSingleBookingFromDB(req.params.bookingId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Car is retrieved successfully",
+    message: "Booking is retrieved successfully",
     data: result,
   });
 });
 
-const updateSingleCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.updateCarFromDB(req.params.carId, req.body);
+const updateSingleBooking = catchAsync(async (req, res, next) => {
+  const result = BookingServices.updateBookingFromDB(req.params.bookingId, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Car is updated successfully",
+    message: "Booking is updated successfully",
     data: result,
   });
 });
 
-const deleteSingleCar = catchAsync(async (req, res, next) => {
-  const result = CarServices.deleteCarFromDB(req.params.carId);
+const deleteSingleBooking = catchAsync(async (req, res, next) => {
+  const result = BookingServices.deleteBookingFromDB(req.params.bookingId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Car is deleted successfully",
+    message: "Booking is Removed successfully",
     data: result,
   });
 });
 
 export const bookingControllers = {
-  addNewBooking,
+  createBooking,
   getAllBookings,
   getSingleBooking,
   updateSingleBooking,

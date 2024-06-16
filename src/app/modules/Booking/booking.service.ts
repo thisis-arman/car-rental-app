@@ -24,7 +24,7 @@ const deleteBookingFromDB = async (_id: string) => {
   return result;
 };
 
-export const CarServices = {
+export const BookingServices = {
   createBookingIntoDB,
   getAllBookingsFromDB,
   getSingleBookingFromDB,
