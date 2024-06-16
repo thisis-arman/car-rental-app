@@ -15,10 +15,11 @@ const userSchema = new Schema<TUser>({
 
 
 userSchema.statics.isUserExists = async function (
-  id: string
+  email: string
 ): Promise<TUser | null> {
-  return this.findById(id).exec();
+  return this.findOne({email}).exec();
 };
+
 
 export const User = model<TUser, UserModel>("User", userSchema);
 

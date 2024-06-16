@@ -14,6 +14,8 @@ const createUser = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 const getAllUsers = catchAsync(async (req, res, next) => {
   const result = userServices.getAllUsersFromDB(req.query);
 
@@ -25,16 +27,20 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 const getSingleUser = catchAsync(async (req, res, next) => {
   const result = userServices.getSingleUserFromDB(req.params.userId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " user is retrieved successfully",
+    message: "user is retrieved successfully",
     data: result,
   });
 });
+
+
 
 const updateSingleUser = catchAsync(async (req, res, next) => {
   const result = userServices.updateUserIntoDB(req.params.userId, req.body);
