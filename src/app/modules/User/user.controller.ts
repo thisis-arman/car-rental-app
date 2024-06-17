@@ -4,12 +4,12 @@ import sendResponse from "../../utils/sendResponse";
 import { userServices } from "./user.service";
 
 const createUser = catchAsync(async (req, res, next) => {
-  const result = userServices.createUserIntoDB(req.body);
+  const result =await userServices.createUserIntoDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User created successfully",
+    message: "User Registered successfully",
     data: result,
   });
 });
@@ -17,7 +17,7 @@ const createUser = catchAsync(async (req, res, next) => {
 
 
 const getAllUsers = catchAsync(async (req, res, next) => {
-  const result = userServices.getAllUsersFromDB(req.query);
+  const result = await userServices.getAllUsersFromDB(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -30,7 +30,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 
 
 const getSingleUser = catchAsync(async (req, res, next) => {
-  const result = userServices.getSingleUserFromDB(req.params.userId);
+  const result = await userServices.getSingleUserFromDB(req.params.userId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -43,7 +43,10 @@ const getSingleUser = catchAsync(async (req, res, next) => {
 
 
 const updateSingleUser = catchAsync(async (req, res, next) => {
-  const result = userServices.updateUserIntoDB(req.params.userId, req.body);
+  const result = await userServices.updateUserIntoDB(
+    req.params.userId,
+    req.body
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -53,7 +56,7 @@ const updateSingleUser = catchAsync(async (req, res, next) => {
   });
 });
 const deleteSingleUser = catchAsync(async (req, res, next) => {
-  const result = userServices.deleteUserFromDB(req.params.userId);
+  const result = await userServices.deleteUserFromDB(req.params.userId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

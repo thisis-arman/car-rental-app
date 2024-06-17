@@ -34,6 +34,11 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+userSchema.post("save", async function (doc, next) {
+  doc.password = "";
+  next();
+});
+
 userSchema.statics.isPasswordMatched = async function (
   plainPassword,
   hashedPassword
