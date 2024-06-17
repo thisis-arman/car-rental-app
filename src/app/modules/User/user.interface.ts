@@ -2,7 +2,6 @@ import { Model } from "mongoose";
 import { USER_ROLE } from "./user.constant";
 
 export type TUser = {
-  [x: string]: string;
   name: string;
   email: string;
   role: "admin" | "user";

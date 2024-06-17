@@ -4,12 +4,10 @@ import sendResponse from "../../utils/sendResponse";
 import { BookingServices } from "./booking.service";
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../../config";
-import { User } from "../User/user.model";
-import Booking from "./booking.model";
 
 const createBooking = catchAsync(async (req, res, next) => {
 
-  const token = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
 
 
     const decoded = jwt.verify(

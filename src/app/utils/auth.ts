@@ -11,7 +11,12 @@ import { User } from "../modules/User/user.model";
 
 const auth = (...requiredRoles:string[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-         const token = req.headers.authorization;
+      const headersToken = req.headers.authorization;
+
+      const token = headersToken?.split(' ')[1];
+
+      
+      console.log({token});
        
 
          if (!token) {
