@@ -47,7 +47,7 @@ const auth = (...requiredRoles:string[]) => {
          if (requiredRoles && !requiredRoles.includes(role)) {
            throw new AppError(
              httpStatus.UNAUTHORIZED,
-             "You are not authorized User"
+             "You have no access to this route"
            );
         }
         

@@ -8,7 +8,6 @@ const addNewCarIntoDB = async (payload: TCar) => {
 };
 
 const getAllCarsFromDB = async (query: Record<string, unknown>) => {
-  
   query.isDeleted = false;
 
   const result = await Car.find(query);
@@ -23,7 +22,7 @@ const getSingleCarFromDB = async (_id: string) => {
 
 
 const updateCarFromDB = async (_id: string, payload: Partial<TCar>) => {
-console.log("26",{payload});
+  console.log("26", { payload });
   const result = await Car.findByIdAndUpdate(_id, payload, {
     new: true,
     runValidators: true,
@@ -31,20 +30,28 @@ console.log("26",{payload});
   return result;
 };
 
+
 const deleteCarFromDB = async (_id: string) => {
-  const result = await Car.findByIdAndUpdate(_id, { isDeleted: true }, {
-    new: true,
-    runValidators:true
-  });
+  const result = await Car.findByIdAndUpdate(
+    _id,
+    { isDeleted: true },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   return result;
 };
+
 
 
 const carReturnIntoDB = async (payload: {
   bookingId: string;
   endTime: string;
 }) => {
-  const booking = await Booking.findById(payload.bookingId).populate('user').populate("carId");
+  const booking = await Booking.findById(payload.bookingId)
+    .populate("user")
+    .populate("carId");
 
   if (!booking) {
     throw new Error("Booking not found");
@@ -71,17 +78,18 @@ const carReturnIntoDB = async (payload: {
 
   const updatedBooking = await booking.save();
 
+  await Car.findByIdAndUpdate(booking.carId, { status: "available" });
+
   console.log({ updatedBooking });
   return updatedBooking;
 };
 
 
-
 export const CarServices = {
   addNewCarIntoDB,
   getAllCarsFromDB,
-    getSingleCarFromDB,
-    updateCarFromDB,
+  getSingleCarFromDB,
+  updateCarFromDB,
   deleteCarFromDB,
-  carReturnIntoDB
+  carReturnIntoDB,
 };

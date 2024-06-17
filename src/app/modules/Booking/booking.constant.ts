@@ -1,0 +1,1 @@
+export const BookingSearchableFields=["carId","date","name"]
