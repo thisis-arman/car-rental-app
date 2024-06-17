@@ -7,8 +7,11 @@ const addNewCarIntoDB = async (payload: TCar) => {
 };
 
 const getAllCarsFromDB = async (query: Record<string, unknown>) => {
-  const result = await Car.find();
-  console.log({result});
+  
+  query.isDeleted = false;
+
+  const result = await Car.find(query);
+  console.log({ result });
   return result;
 };
 
@@ -28,7 +31,10 @@ const updateCarFromDB = async (_id: string, payload: Partial<TCar>) => {
 };
 
 const deleteCarFromDB = async (_id: string) => {
-  const result = await Car.findByIdAndUpdate(_id,{isDeleted:true});
+  const result = await Car.findByIdAndUpdate(_id, { isDeleted: true }, {
+    new: true,
+    runValidators:true
+  });
   return result;
 };
 
