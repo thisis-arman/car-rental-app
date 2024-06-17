@@ -15,7 +15,8 @@ const addNewCar = catchAsync(async (req, res, next) => {
 });
 
 const getAllCars = catchAsync(async (req, res, next) => {
-  const result =await CarServices.getAllCarsFromDB(req.body);
+  const result = await CarServices.getAllCarsFromDB(req.query);
+  console.log({result});
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -25,7 +26,7 @@ const getAllCars = catchAsync(async (req, res, next) => {
 });
 
 const getSingleCar = catchAsync(async (req, res, next) => {
-  const result = await CarServices.getSingleCarFromDB(req.params.carId);
+  const result = await CarServices.getSingleCarFromDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -35,7 +36,7 @@ const getSingleCar = catchAsync(async (req, res, next) => {
 });
 
 const updateSingleCar = catchAsync(async (req, res, next) => {
-  const result =await CarServices.updateCarFromDB(req.params.carId, req.body);
+  const result =await CarServices.updateCarFromDB(req.params.id, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -46,7 +47,7 @@ const updateSingleCar = catchAsync(async (req, res, next) => {
 
 
 const deleteSingleCar = catchAsync(async (req, res, next) => {
-  const result =await CarServices.deleteCarFromDB(req.params.carId);
+  const result =await CarServices.deleteCarFromDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

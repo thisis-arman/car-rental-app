@@ -14,16 +14,16 @@ router.post(
 );
 
 router.get("/", bookingControllers.getAllBookings);
+
 router.get("/", bookingControllers.getPersonalizedBookings);
 
 router.get("/:id", auth(USER_ROLE.admin),bookingControllers.getSingleBooking);
 
 router.delete("/:id", bookingControllers.deleteSingleBooking);
 
-// TODO: update schema
-router.put(
-  "/:id",
-  validateRequest(BookingValidation.createBookingValidationSchema),
+// TODO: Update Schema
+
+router.put("/:id", validateRequest(BookingValidation.createBookingValidationSchema),
   bookingControllers.updateSingleBooking
 );
 
