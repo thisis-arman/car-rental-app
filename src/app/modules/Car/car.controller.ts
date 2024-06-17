@@ -4,8 +4,8 @@ import sendResponse from "../../utils/sendResponse";
 import { CarServices } from "./car.service";
 
 const addNewCar = catchAsync(async (req, res, next) => {
-    const result = await CarServices.addNewCarIntoDB(req.body);
-    console.log({result});
+  const result = await CarServices.addNewCarIntoDB(req.body);
+  console.log({ result });
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "Car added successfully",
@@ -16,7 +16,7 @@ const addNewCar = catchAsync(async (req, res, next) => {
 
 const getAllCars = catchAsync(async (req, res, next) => {
   const result = await CarServices.getAllCarsFromDB(req.query);
-  console.log({result});
+  console.log({ result });
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -36,7 +36,7 @@ const getSingleCar = catchAsync(async (req, res, next) => {
 });
 
 const updateSingleCar = catchAsync(async (req, res, next) => {
-  const result =await CarServices.updateCarFromDB(req.params.id, req.body);
+  const result = await CarServices.updateCarFromDB(req.params.id, req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -45,9 +45,8 @@ const updateSingleCar = catchAsync(async (req, res, next) => {
   });
 });
 
-
 const deleteSingleCar = catchAsync(async (req, res, next) => {
-  const result =await CarServices.deleteCarFromDB(req.params.id);
+  const result = await CarServices.deleteCarFromDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -56,10 +55,28 @@ const deleteSingleCar = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
+const carReturn = catchAsync(async (req, res, next) => {
+
+
+  const result = await CarServices.carReturnIntoDB(req.body);
+
+
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Car Returned Successfully",
+    data: result,
+  });
+});
+
 export const carControllers = {
   addNewCar,
   getAllCars,
   getSingleCar,
-    updateSingleCar,
-  deleteSingleCar
+  updateSingleCar,
+  deleteSingleCar,
+  carReturn,
 };

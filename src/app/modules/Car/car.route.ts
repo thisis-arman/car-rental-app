@@ -20,6 +20,11 @@ router.get("/:id", carControllers.getSingleCar);
 
 router.delete("/:id", auth(USER_ROLE.admin), carControllers.deleteSingleCar);
 
+
+router.put("/return", auth(USER_ROLE.admin), carControllers.carReturn);
+export const CarRoutes = router;
+
+
 router.put(
   "/:id",
   auth(USER_ROLE.admin),
@@ -27,4 +32,4 @@ router.put(
   carControllers.updateSingleCar
 );
 
-export const CarRoutes = router;
+
