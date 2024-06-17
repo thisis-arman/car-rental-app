@@ -44,7 +44,7 @@ const carReturnIntoDB = async (payload: {
   bookingId: string;
   endTime: string;
 }) => {
-  const booking = await Booking.findById(payload.bookingId).populate("carId");
+  const booking = await Booking.findById(payload.bookingId).populate('user').populate("carId");
 
   if (!booking) {
     throw new Error("Booking not found");
