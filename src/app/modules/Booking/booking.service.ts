@@ -11,6 +11,11 @@ const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 
+const getPersonalizedBookingsFromDB = async (email:string) => {
+  const result = await Booking.findOne({email});
+  return result;
+};
+
 const getSingleBookingFromDB = async (_id: string) => {
   const result = await Booking.findById(_id);
   return result;
@@ -27,6 +32,7 @@ const deleteBookingFromDB = async (_id: string) => {
 export const BookingServices = {
   createBookingIntoDB,
   getAllBookingsFromDB,
+  getPersonalizedBookingsFromDB,
   getSingleBookingFromDB,
   updateBookingFromDB,
   deleteBookingFromDB,

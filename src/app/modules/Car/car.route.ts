@@ -2,11 +2,13 @@ import express from "express";
 import { validateRequest } from "../../middleware/validateRequest";
 import { carValidations } from "./car.validation";
 import { carControllers } from "./car.controller";
+import auth from "../../utils/auth";
+import { USER_ROLE } from "../User/user.constant";
 
 const router = express.Router();
 
 router.post(
-  "/",
+  "/",auth(USER_ROLE.admin),
   validateRequest(carValidations.createCarValidationSchema),
   carControllers.addNewCar
 );

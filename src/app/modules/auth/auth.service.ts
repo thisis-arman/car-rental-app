@@ -38,6 +38,7 @@ const loginUser = async (payload: TAuth) => {
     email: user.email,
     role: user.role,
   };
+  console.log({jwtPayload});
 
   // Create access token
 
@@ -56,6 +57,7 @@ const loginUser = async (payload: TAuth) => {
   return {
     accessToken,
     refreshToken,
+    user
   };
 };
 

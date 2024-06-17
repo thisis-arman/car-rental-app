@@ -4,19 +4,22 @@ import sendResponse from "../../utils/sendResponse";
 import { authServices } from "./auth.service";
 
 const loginUser = catchAsync(async (req, res, next) => {
-  const result = authServices.loginUser(req.body);
+  const {user,accessToken} =await authServices.loginUser(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "User logged in successfully",
     success: true,
-    data: result,
+    data: {
+      user,
+      token: accessToken
+    },
   });
 });
 
 
 
 const changePassword = catchAsync(async (req, res, next) => {
-  const result = authServices.changePassword(req.body);
+  const result = await authServices.changePassword(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

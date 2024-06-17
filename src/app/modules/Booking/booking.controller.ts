@@ -23,6 +23,19 @@ const getAllBookings = catchAsync(async (req, res, next) => {
   });
 });
 
+
+// TODO : decode token to find out email for personalized bookings
+
+const getPersonalizedBookings = catchAsync(async (req, res, next) => {
+  const result = await BookingServices.getAllBookingsFromDB(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Bookings are retrieved successfully",
+    data: result,
+  });
+});
+
 const getSingleBooking = catchAsync(async (req, res, next) => {
   const result = await BookingServices.getSingleBookingFromDB(req.params.id);
   sendResponse(res, {
@@ -59,6 +72,7 @@ const deleteSingleBooking = catchAsync(async (req, res, next) => {
 export const bookingControllers = {
   createBooking,
   getAllBookings,
+  getPersonalizedBookings,
   getSingleBooking,
   updateSingleBooking,
   deleteSingleBooking,
