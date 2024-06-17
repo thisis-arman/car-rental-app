@@ -43,7 +43,15 @@ const getAllBookings = catchAsync(async (req, res, next) => {
 // TODO : decode token to find out email for personalized bookings
 
 const getPersonalizedBookings = catchAsync(async (req, res, next) => {
-  const result = await BookingServices.getAllBookingsFromDB(req.body);
+
+   const token = req.headers.authorization;
+
+   const decoded = jwt.verify(
+     token as string,
+     config.jwt_access_token as string
+  ) as JwtPayload;
+  
+  const result = await BookingServices.getPersonalizedBookingsFromDB(decoded);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -51,6 +59,8 @@ const getPersonalizedBookings = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
+
+
 
 const getSingleBooking = catchAsync(async (req, res, next) => {
   const result = await BookingServices.getSingleBookingFromDB(req.params.id);

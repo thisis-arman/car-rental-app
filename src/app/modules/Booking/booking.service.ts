@@ -31,9 +31,14 @@ const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const getPersonalizedBookingsFromDB = async (email: string) => {
-  const result = await Booking.findOne({ email });
-  return result;
+const getPersonalizedBookingsFromDB = async (decoded: JwtPayload) => {
+  const result = await Booking.find().populate("user").populate("carId");
+
+  const personalizedBooking = result.filter(
+    (booking) => booking.user?.email === decoded.email
+  );
+
+  return personalizedBooking;
 };
 
 const getSingleBookingFromDB = async (_id: string) => {
