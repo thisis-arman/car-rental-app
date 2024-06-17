@@ -7,15 +7,14 @@ import { number } from "zod";
 const BookingSchema = new Schema<TBooking>(
   {
     date: {
-      type: Date,
+      type: String,
       required: [true, "Date is required"],
     },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: [true, "User ID is required"],
     },
-    car: {
+    carId: {
       type: Schema.Types.ObjectId,
       ref: "Car",
       required: [true, "Car ID is required"],
@@ -26,7 +25,7 @@ const BookingSchema = new Schema<TBooking>(
     },
     endTime: {
       type: String,
-      required: [true, "End time is required"],
+      default:null
     },
     totalCost: {
       type: Number,

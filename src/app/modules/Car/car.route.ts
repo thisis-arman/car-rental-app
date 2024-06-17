@@ -8,7 +8,8 @@ import { USER_ROLE } from "../User/user.constant";
 const router = express.Router();
 
 router.post(
-  "/",auth(USER_ROLE.admin),
+  "/",
+  auth(USER_ROLE.admin),
   validateRequest(carValidations.createCarValidationSchema),
   carControllers.addNewCar
 );
@@ -17,10 +18,11 @@ router.get("/", carControllers.getAllCars);
 
 router.get("/:id", carControllers.getSingleCar);
 
-router.delete("/:id", carControllers.deleteSingleCar);
+router.delete("/:id", auth(USER_ROLE.admin), carControllers.deleteSingleCar);
 
 router.put(
   "/:id",
+  auth(USER_ROLE.admin),
   validateRequest(carValidations.updateCarValidationSchema),
   carControllers.updateSingleCar
 );

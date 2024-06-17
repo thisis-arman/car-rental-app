@@ -2,14 +2,30 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { BookingServices } from "./booking.service";
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import config from "../../config";
+import { User } from "../User/user.model";
+import Booking from "./booking.model";
 
 const createBooking = catchAsync(async (req, res, next) => {
-  const result =await BookingServices.createBookingIntoDB(req.body);
+
+  const token = req.headers.authorization;
+
+
+    const decoded = jwt.verify(
+      token as string,
+      config.jwt_access_token as string
+  ) as JwtPayload;
+
+  const booking = await BookingServices.createBookingIntoDB(req.body,decoded);
+
+ 
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "Booking added successfully",
     success: true,
-    data: result,
+    data: booking,
   });
 });
 

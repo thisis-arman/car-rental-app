@@ -1,8 +1,28 @@
+import { JwtPayload } from "jsonwebtoken";
 import { TBooking } from "./booking.interface";
 import Booking from "./booking.model";
+import { User } from "../User/user.model";
+import AppError from "../../error/AppError";
+import httpStatus from "http-status";
 
-const createBookingIntoDB = async (payload: TBooking) => {
-  const result = await Booking.create(payload);
+const createBookingIntoDB = async (payload: TBooking, decoded: JwtPayload) => {
+  const bookingUser = await User.isUserExists(decoded.email);
+
+  if (!bookingUser) {
+    throw new AppError(httpStatus.UNAUTHORIZED, "Please login to book  a car");
+  }
+
+  let userID = bookingUser._id as string;
+  const newPayload = { ...payload, user: userID };
+  // Create the booking
+  const booking = await Booking.create(newPayload);
+
+  const result = await Booking.findById(booking._id)
+    .populate("carId")
+    .populate("user")
+    .exec();
+  // Populate the carId field
+
   return result;
 };
 
@@ -11,8 +31,8 @@ const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 
-const getPersonalizedBookingsFromDB = async (email:string) => {
-  const result = await Booking.findOne({email});
+const getPersonalizedBookingsFromDB = async (email: string) => {
+  const result = await Booking.findOne({ email });
   return result;
 };
 
