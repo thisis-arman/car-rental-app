@@ -13,9 +13,9 @@ router.post(
   bookingControllers.createBooking
 );
 
-router.get("/", bookingControllers.getAllBookings);
+router.get("/",auth(USER_ROLE.admin), bookingControllers.getAllBookings);
 
-router.get("/my-bookings", bookingControllers.getPersonalizedBookings);
+router.get("/my-bookings",auth(USER_ROLE.user), bookingControllers.getPersonalizedBookings);
 
 router.get("/:id", auth(USER_ROLE.admin),bookingControllers.getSingleBooking);
 
