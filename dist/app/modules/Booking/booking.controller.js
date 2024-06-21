@@ -20,7 +20,9 @@ const booking_service_1 = require("./booking.service");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
 const createBooking = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.headers.authorization;
+    var _a;
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+    console.log({ token });
     const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_token);
     const booking = yield booking_service_1.BookingServices.createBookingIntoDB(req.body, decoded);
     (0, sendResponse_1.default)(res, {
@@ -41,7 +43,8 @@ const getAllBookings = (0, catchAsync_1.default)((req, res, next) => __awaiter(v
 }));
 // TODO : decode token to find out email for personalized bookings
 const getPersonalizedBookings = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.headers.authorization;
+    var _b;
+    const token = (_b = req.headers.authorization) === null || _b === void 0 ? void 0 : _b.split(' ')[1];
     const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_token);
     const result = yield booking_service_1.BookingServices.getPersonalizedBookingsFromDB(decoded);
     (0, sendResponse_1.default)(res, {

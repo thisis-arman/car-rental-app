@@ -12,8 +12,8 @@ const auth_1 = __importDefault(require("../../utils/auth"));
 const user_constant_1 = require("../User/user.constant");
 const router = express_1.default.Router();
 router.post("/", (0, auth_1.default)(user_constant_1.USER_ROLE.user), (0, validateRequest_1.validateRequest)(booking_validation_1.BookingValidation.createBookingValidationSchema), booking_controller_1.bookingControllers.createBooking);
-router.get("/", booking_controller_1.bookingControllers.getAllBookings);
-router.get("/my-bookings", booking_controller_1.bookingControllers.getPersonalizedBookings);
+router.get("/", (0, auth_1.default)(user_constant_1.USER_ROLE.admin), booking_controller_1.bookingControllers.getAllBookings);
+router.get("/my-bookings", (0, auth_1.default)(user_constant_1.USER_ROLE.user), booking_controller_1.bookingControllers.getPersonalizedBookings);
 router.get("/:id", (0, auth_1.default)(user_constant_1.USER_ROLE.admin), booking_controller_1.bookingControllers.getSingleBooking);
 router.delete("/:id", booking_controller_1.bookingControllers.deleteSingleBooking);
 // TODO: Update Schema

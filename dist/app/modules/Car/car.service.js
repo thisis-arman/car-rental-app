@@ -13,6 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CarServices = void 0;
+const http_status_1 = __importDefault(require("http-status"));
+const AppError_1 = __importDefault(require("../../error/AppError"));
 const booking_model_1 = __importDefault(require("../Booking/booking.model"));
 const car_model_1 = require("./car.model");
 const addNewCarIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -45,11 +47,22 @@ const deleteCarFromDB = (_id) => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 const carReturnIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const booking = yield booking_model_1.default.findById(payload.bookingId)
         .populate("user")
-        .populate("carId");
+        .populate({
+        path: "carId",
+        model: car_model_1.Car,
+    });
     if (!booking) {
-        throw new Error("Booking not found");
+        throw new Error("Booking or carId is missing");
+    }
+    if (!booking.carId) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Car ID is missing");
+    }
+    const car = yield car_model_1.Car.findById(booking.carId);
+    if (!car) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Car not found");
     }
     const [startHour, startMinute] = booking.startTime.split(":").map(Number);
     const [endHour, endMinute] = payload.endTime.split(":").map(Number);
@@ -60,8 +73,10 @@ const carReturnIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function*
     if (durationInHours < 0) {
         throw new Error("End time must be after start time");
     }
-    // Calculate total cost
-    const totalCost = durationInHours * booking.carId.pricePerHour;
+    if (!booking.carId) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Car ID is missing");
+    }
+    const totalCost = durationInHours * ((_a = car.pricePerHour) !== null && _a !== void 0 ? _a : 0);
     booking.endTime = payload.endTime;
     booking.totalCost = totalCost;
     const updatedBooking = yield booking.save();

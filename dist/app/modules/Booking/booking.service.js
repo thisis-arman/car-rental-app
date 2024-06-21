@@ -54,8 +54,8 @@ const getAllBookingsFromDB = (query) => __awaiter(void 0, void 0, void 0, functi
     return result;
 });
 const getPersonalizedBookingsFromDB = (decoded) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield booking_model_1.default.find().populate("user").populate("carId");
-    const personalizedBooking = result.filter((booking) => { var _a; return ((_a = booking.user) === null || _a === void 0 ? void 0 : _a.email) === decoded.email; });
+    const bookings = yield booking_model_1.default.find().populate("user").populate("carId");
+    const personalizedBooking = bookings.filter((booking) => { var _a; return ((_a = booking.user) === null || _a === void 0 ? void 0 : _a.email) === decoded.email; });
     return personalizedBooking;
 });
 const getSingleBookingFromDB = (_id) => __awaiter(void 0, void 0, void 0, function* () {

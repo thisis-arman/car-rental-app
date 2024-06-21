@@ -1,6 +1,15 @@
+import httpStatus from "http-status";
+import AppError from "../../error/AppError";
+import { TBooking } from "../Booking/booking.interface";
 import Booking from "../Booking/booking.model";
 import { TCar } from "./car.interface";
 import { Car } from "./car.model";
+
+
+export interface IBooking extends Document {
+  // Other properties...
+  carId:typeof Car | null; // Ensure this matches the actual relationship in your schema
+}
 
 const addNewCarIntoDB = async (payload: TCar) => {
   const result = await Car.create(payload);
@@ -49,13 +58,30 @@ const carReturnIntoDB = async (payload: {
   bookingId: string;
   endTime: string;
 }) => {
+
+
+
   const booking = await Booking.findById(payload.bookingId)
     .populate("user")
-    .populate("carId");
+    .populate({
+      path: "carId",
+      model: Car,
+    });
 
-  if (!booking) {
-    throw new Error("Booking not found");
+if (!booking) {
+  throw new Error("Booking or carId is missing");
   }
+  
+  if (!booking.carId) {
+    throw new AppError(httpStatus.NOT_FOUND, "Car ID is missing");
+  }
+
+  const car = await Car.findById(booking.carId);
+
+  if (!car) {
+    throw new AppError(httpStatus.NOT_FOUND, "Car not found");
+  }
+
 
   const [startHour, startMinute] = booking.startTime.split(":").map(Number);
   const [endHour, endMinute] = payload.endTime.split(":").map(Number);
@@ -70,11 +96,16 @@ const carReturnIntoDB = async (payload: {
     throw new Error("End time must be after start time");
   }
 
-  // Calculate total cost
-  const totalCost = durationInHours * booking.carId.pricePerHour;
+  if (!booking.carId) {
+    throw new AppError(httpStatus.NOT_FOUND,"Car ID is missing");
+  }
+ const totalCost = durationInHours * (car.pricePerHour ?? 0);
+
+
 
   booking.endTime = payload.endTime;
   booking.totalCost = totalCost;
+  
 
   const updatedBooking = await booking.save();
 

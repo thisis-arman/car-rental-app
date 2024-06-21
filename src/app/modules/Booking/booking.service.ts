@@ -7,6 +7,8 @@ import httpStatus from "http-status";
 import { Car } from "../Car/car.model";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { BookingSearchableFields } from "./booking.constant";
+import { TUser } from "../User/user.interface";
+import { ObjectId } from "mongodb";
 
 const createBookingIntoDB = async (payload: TBooking, decoded: JwtPayload) => {
   const bookingUser = await User.isUserExists(decoded.email);
@@ -25,7 +27,7 @@ const createBookingIntoDB = async (payload: TBooking, decoded: JwtPayload) => {
     );
   }
 
-  let userID = bookingUser._id as string;
+  let userID = bookingUser._id as ObjectId;
   const newPayload = { ...payload, user: userID };
   // Create the booking
   const booking = await Booking.create(newPayload);
@@ -56,10 +58,10 @@ const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getPersonalizedBookingsFromDB = async (decoded: JwtPayload) => {
-  const result = await Booking.find().populate("user").populate("carId");
+  const bookings = await Booking.find().populate("user").populate("carId");
 
-  const personalizedBooking = result.filter(
-    (booking) => booking.user?.email === decoded.email
+  const personalizedBooking = bookings.filter(
+    (booking) =>( booking.user as Partial<TUser>)?.email  === decoded.email
   );
 
   return personalizedBooking;

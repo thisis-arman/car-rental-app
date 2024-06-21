@@ -20,7 +20,9 @@ const config_1 = __importDefault(require("../config"));
 const user_model_1 = require("../modules/User/user.model");
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = req.headers.authorization;
+        const headersToken = req.headers.authorization;
+        const token = headersToken === null || headersToken === void 0 ? void 0 : headersToken.split(' ')[1];
+        console.log({ token });
         if (!token) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "Unauthorized request");
         }
