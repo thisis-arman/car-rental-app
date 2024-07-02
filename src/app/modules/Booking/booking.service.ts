@@ -1,4 +1,4 @@
-import { TUser } from './../User/user.interface';
+import { TUser } from "./../User/user.interface";
 import { JwtPayload } from "jsonwebtoken";
 import { TBooking } from "./booking.interface";
 import Booking from "./booking.model";
@@ -39,31 +39,23 @@ const createBookingIntoDB = async (payload: TBooking, decoded: JwtPayload) => {
     .populate("user")
     .exec();
 
-   if (!result) {
-     throw new AppError(httpStatus.NOT_FOUND, "Booking not found");
-   }
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Booking not found");
+  }
 
-   const userWithoutPassword = JSON.parse(
-     JSON.stringify(result.user, (key, value) =>
-       key === "password" ? undefined : value
-     )
-   );
+  const userWithoutPassword = JSON.parse(
+    JSON.stringify(result.user, (key, value) =>
+      key === "password" ? undefined : value
+    )
+  );
 
-
-   const newBooking = {
-     ...result.toObject(),
-     user: userWithoutPassword,
+  const newBooking = {
+    ...result.toObject(),
+    user: userWithoutPassword,
   };
-  
 
-   
-
-   return newBooking;
+  return newBooking;
 };
-
-
-
-
 
 const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
   console.log({ query });
@@ -78,10 +70,10 @@ const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
 
   const result: TBooking[] = await bookingQuery.modelQuery.lean().exec();
 
-  const newData = result.map((booking :TBooking) => {
+  const newData = result.map((booking: TBooking) => {
     const userWithoutPassword = { ...(booking.user as unknown as TUser) };
     if ("password" in userWithoutPassword) {
-      userWithoutPassword.password='' ;
+      userWithoutPassword.password = "";
     }
 
     return {
@@ -95,16 +87,30 @@ const getAllBookingsFromDB = async (query: Record<string, unknown>) => {
   return newData;
 };
 
-
-
 const getPersonalizedBookingsFromDB = async (decoded: JwtPayload) => {
-  const bookings = await Booking.find().populate("user").populate("carId");
+  const bookings = await Booking.find()
+    .populate("user")
+    .populate("carId")
+    .lean()
+    .exec();
 
-  const personalizedBooking = bookings.filter(
-    (booking) =>( booking.user as Partial<TUser>)?.email  === decoded.email
-  );
+  const personalizedBookings = bookings
+    .filter(
+      (booking) => (booking.user as Partial<TUser>)?.email === decoded.email
+    )
+    .map((booking: TBooking) => {
+      const userWithoutPassword = { ...(booking.user as unknown as TUser) };
+      if ("password" in userWithoutPassword) {
+        userWithoutPassword.password = "";
+      }
 
-  return personalizedBooking;
+      return {
+        ...booking,
+        user: userWithoutPassword,
+      };
+    });
+
+  return personalizedBookings;
 };
 
 const getSingleBookingFromDB = async (_id: string) => {

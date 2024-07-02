@@ -4,11 +4,12 @@ import { TBooking } from "../Booking/booking.interface";
 import Booking from "../Booking/booking.model";
 import { TCar } from "./car.interface";
 import { Car } from "./car.model";
+import { UpdateQuery } from "mongoose";
 
 
 export interface IBooking extends Document {
-  // Other properties...
-  carId:typeof Car | null; // Ensure this matches the actual relationship in your schema
+ 
+  carId:typeof Car | null; 
 }
 
 const addNewCarIntoDB = async (payload: TCar) => {
@@ -30,14 +31,33 @@ const getSingleCarFromDB = async (_id: string) => {
 };
 
 
+
 const updateCarFromDB = async (_id: string, payload: Partial<TCar>) => {
-  console.log("26", { payload });
-  const result = await Car.findByIdAndUpdate(_id, payload, {
+  const update: UpdateQuery<TCar> = {};
+
+  // Loop through the payload to construct the update object
+  Object.keys(payload).forEach((key) => {
+    // Use type assertion to tell TypeScript that 'key' is a valid key of TCar
+    const carKey = key as keyof TCar;
+
+    // Handle array fields separately to append new elements
+    if (Array.isArray(payload[carKey])) {
+      update.$push = update.$push || {};
+      update.$push[carKey] = { $each: payload[carKey] };
+    } else {
+      // For non-array fields, set them directly
+      update[carKey] = payload[carKey] as any;
+    }
+  });
+
+  const result = await Car.findByIdAndUpdate(_id, update, {
     new: true,
     runValidators: true,
   });
+
   return result;
 };
+
 
 
 const deleteCarFromDB = async (_id: string) => {
@@ -112,7 +132,7 @@ if (!booking) {
 
 
   booking.endTime = payload.endTime;
-  booking.totalCost = totalCost;
+  booking.totalCost = Number(totalCost.toFixed(2));
   
 
   const updatedBooking = await booking.save();
