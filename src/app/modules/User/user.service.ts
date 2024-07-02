@@ -6,7 +6,7 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import mongoose from "mongoose";
 
-// TODO:implement transition and rollback here in this function
+
 const createUserIntoDB = async (payload: TUser) => {
   const isUserExists = await User.isUserExists(payload.email);
   if (isUserExists) {
@@ -49,7 +49,6 @@ const getSingleUserFromDB = async (_id: string) => {
   return user;
 };
 
-//TODO:implement Dynamic update in this function
 const updateUserIntoDB = async (_id: string, payload: Partial<TUser>) => {
   const user = await User.findByIdAndUpdate(
     _id,
@@ -65,7 +64,7 @@ const updateUserIntoDB = async (_id: string, payload: Partial<TUser>) => {
   return user;
 };
 
-// TODO:implement transition and rollback here in this function
+
 const deleteUserFromDB = async (_id: string) => {
   const deletedUser = await User.findByIdAndUpdate(_id, {
     isDeleted: true,

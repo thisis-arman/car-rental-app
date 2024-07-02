@@ -11,7 +11,7 @@ const userSchema = new Schema<TUser>(
     password: { type: String, required: true },
     phone: { type: String, required: true },
     address: { type: String, required: true },
-    isDeleted: { type: Boolean, default: false },
+    // isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -34,10 +34,18 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+
+
 userSchema.post("save", async function (doc, next) {
   doc.password = "";
   next();
 });
+
+userSchema.pre("findOne", async function (next) { 
+  next();
+})
+
+
 
 userSchema.statics.isPasswordMatched = async function (
   plainPassword,

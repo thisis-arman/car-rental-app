@@ -3,6 +3,7 @@
 import { Schema, model, Types } from "mongoose";
 import { TBooking } from "./booking.interface";
 import { number } from "zod";
+import { TUser } from "../User/user.interface";
 
 const BookingSchema = new Schema<TBooking>(
   {
@@ -36,6 +37,19 @@ const BookingSchema = new Schema<TBooking>(
   { timestamps: true }
 );
 
+
+export interface PopulatedBooking extends Omit<TBooking, 'user'>  {
+  user: TUser;
+};
+
+
+BookingSchema.post("save", async function (doc, next) {
+  console.log(" from booking schema =>", await doc.populate("user"));
+  const {user} = await doc.populate("user") as unknown as PopulatedBooking;
+  console.log(user);
+  user.password = "";
+  next()
+})
 const Booking = model<TBooking>("Booking", BookingSchema);
 
 export default Booking;

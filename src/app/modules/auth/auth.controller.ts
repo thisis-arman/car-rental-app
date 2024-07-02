@@ -4,13 +4,13 @@ import sendResponse from "../../utils/sendResponse";
 import { authServices } from "./auth.service";
 
 const loginUser = catchAsync(async (req, res, next) => {
-  const {user,accessToken} =await authServices.loginUser(req.body);
+  const {newUser,accessToken} =await authServices.loginUser(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "User logged in successfully",
     success: true,
     data: {
-      user,
+      user:newUser,
       token: accessToken
     },
   });

@@ -41,6 +41,13 @@ const updateCarFromDB = async (_id: string, payload: Partial<TCar>) => {
 
 
 const deleteCarFromDB = async (_id: string) => {
+
+  const isAlreadyDeleted = await Car.findById(_id);
+
+  if (isAlreadyDeleted?.isDeleted) {
+    throw new AppError(httpStatus.BAD_REQUEST,"Car already deleted")
+  }
+
   const result = await Car.findByIdAndUpdate(
     _id,
     { isDeleted: true },
@@ -67,6 +74,7 @@ const carReturnIntoDB = async (payload: {
       path: "carId",
       model: Car,
     });
+ 
 
 if (!booking) {
   throw new Error("Booking or carId is missing");
@@ -111,7 +119,6 @@ if (!booking) {
 
   await Car.findByIdAndUpdate(booking.carId, { status: "available" });
 
-  console.log({ updatedBooking });
   return updatedBooking;
 };
 

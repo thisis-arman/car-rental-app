@@ -50,7 +50,7 @@ const deleteSingleCar = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Car is deleted successfully",
+    message: "Car deleted successfully",
     data: result,
   });
 });
@@ -58,11 +58,7 @@ const deleteSingleCar = catchAsync(async (req, res, next) => {
 
 
 const carReturn = catchAsync(async (req, res, next) => {
-
-
   const result = await CarServices.carReturnIntoDB(req.body);
-
-
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

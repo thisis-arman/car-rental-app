@@ -38,7 +38,7 @@ const loginUser = async (payload: TAuth) => {
     email: user.email,
     role: user.role,
   };
-  console.log({jwtPayload});
+  console.log("from auth service",jwtPayload);
 
   // Create access token
 
@@ -53,11 +53,15 @@ const loginUser = async (payload: TAuth) => {
     config.jwt_refresh_token_expires_in as string
   );
 
-  console.log({ accessToken });
+const newUser = JSON.parse(
+  JSON.stringify(user, (key, value) => (key === "password" ? undefined : value)))
+ 
+  // console.log("auth serv => ", newUser, { user });
+  
   return {
     accessToken,
     refreshToken,
-    user
+    newUser
   };
 };
 
