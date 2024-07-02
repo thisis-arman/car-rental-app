@@ -10,7 +10,7 @@ import handleCastError from "../error/handleCastError";
 import handleDuplicateError from "../error/handleDuplicateError";
 import AppError from "../error/AppError";
 
-const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   //setting default values
   let statusCode = 500;
   let message = "Something went wrong!";
@@ -21,41 +21,41 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     },
   ];
 
-  if (err instanceof ZodError) {
-    const simplifiedError = handleZodError(err);
+  if (error instanceof ZodError) {
+    const simplifiedError = handleZodError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorOrigin = simplifiedError?.errorOrigin;
-  } else if (err?.name === "ValidationError") {
-    const simplifiedError = handleValidationError(err);
+  } else if (error?.name === "ValidationError") {
+    const simplifiedError = handleValidationError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorOrigin = simplifiedError?.errorOrigin;
-  } else if (err?.name === "CastError") {
-    const simplifiedError = handleCastError(err);
+  } else if (error?.name === "CastError") {
+    const simplifiedError = handleCastError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorOrigin = simplifiedError?.errorOrigin;
-  } else if (err?.code === 11000) {
-    const simplifiedError = handleDuplicateError(err);
+  } else if (error?.code === 11000) {
+    const simplifiedError = handleDuplicateError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorOrigin = simplifiedError?.errorOrigin;
-  } else if (err instanceof AppError) {
-    statusCode = err?.statusCode;
-    message = err.message;
+  } else if (error instanceof AppError) {
+    statusCode = error?.statusCode;
+    message = error.message;
     errorOrigin = [
       {
         path: "",
-        message: err?.message,
+        message: error?.message,
       },
     ];
-  } else if (err instanceof Error) {
-    message = err.message;
+  } else if (error instanceof Error) {
+    message = error.message;
     errorOrigin = [
       {
         path: "",
-        message: err?.message,
+        message: error?.message,
       },
     ];
   }
@@ -65,8 +65,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     success: false,
     message,
     errorOrigin,
-    err,
-    stack: config.NODE_ENV === "development" ? err?.stack : null,
+    stack: config.NODE_ENV === "development" ? error?.stack : null,
   });
 };
 
